@@ -65,25 +65,13 @@
   font-weight: 400;
 }
 
-.list article .likes {
+.likes {
   grid-row: 2;
-  float: right;
-
-  justify-self: end;
 
   width: fit-content;
-}
-
-.list article .likes p {
-  margin: 0;
+  justify-self: end;
 
   color: var(--fg-secondary);
   font-size: 1.5em;
   font-weight: 500;
-}
-
-.list article .likes svg {
-  margin-left: 0.2em;
-
-  vertical-align: center;
 }

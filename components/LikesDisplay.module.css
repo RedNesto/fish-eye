@@ -1,0 +1,11 @@
+.likes {
+  margin: 0;
+
+  text-transform: math-auto;
+}
+
+.likes svg {
+  margin-left: 0.2em;
+
+  vertical-align: center;
+}
