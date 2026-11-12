@@ -8,3 +8,15 @@ const adapter = new PrismaBetterSqlite3({ url: connectionString });
 const prisma = new PrismaClient({ adapter });
 
 export { prisma };
+
+export function getAllPhotographers() {
+    return prisma.photographer.findMany();
+}
+
+export function getPhotographerById(photographerId: number) {
+    return prisma.photographer.findUnique({ where: { id: photographerId } });
+}
+
+export function getPhotographerMedias(photographerId: number) {
+    return prisma.media.findMany({ where: { photographerId: photographerId } });
+}

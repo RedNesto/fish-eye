@@ -1,0 +1,40 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: fit-content;
+}
+
+.card img {
+  object-fit: cover;
+  border-radius: 100px;
+}
+
+.card h2 {
+  margin: 0;
+
+  font-size: 2.25em; /* ~36px */
+  text-align: center;
+  color: var(--fg-primary)
+}
+
+.card p {
+  margin: 0;
+  text-align: center;
+}
+
+.card .location {
+  font-size: 0.8em; /* ~13px */
+  color: var(--fg-secondary);
+}
+
+.card .tagline {
+  font-size: 0.65em; /* ~10px */
+  color: #000000;
+}
+
+.card .price {
+  font-size: 0.6em; /* ~9px */
+  color: #757575
+}
