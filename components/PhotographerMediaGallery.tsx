@@ -2,9 +2,10 @@
 
 import styles from "./PhotographerMediaGallery.module.css";
 import { Media } from "@/generated/prisma/client";
-import { KeyboardEventHandler, MouseEventHandler, useState } from "react";
+import { KeyboardEventHandler, MouseEventHandler, startTransition, useState } from "react";
 import LikesDisplay from "@/components/LikesDisplay";
 import MediaLightbox from "@/components/MediaLightbox";
+import { incrementMediaLike } from "@/lib/prisma";
 
 function MediaGalleryItem({ media, onMediaClick, onMediaKeyDown }: {
     media: Media,
@@ -13,13 +14,23 @@ function MediaGalleryItem({ media, onMediaClick, onMediaKeyDown }: {
 }) {
     const mediaElement = media.image
         // eslint-disable-next-line @next/next/no-img-element
-        ? <img src={"/assets/" + media.image} alt={media.title} onClick={onMediaClick} tabIndex={0}/>
-        : <video autoPlay muted loop playsInline src={"/assets/" + media.video} aria-label={media.title} onClick={onMediaClick} tabIndex={0}/>;
+        ? <img src={"/assets/" + media.image} alt={media.title} onClick={onMediaClick} tabIndex={0} onKeyDown={onMediaKeyDown}/>
+        : <video autoPlay muted loop playsInline src={"/assets/" + media.video} aria-label={media.title} onClick={onMediaClick} onKeyDown={onMediaKeyDown} tabIndex={0}/>;
+    const [likes, setLikes] = useState(media.likes);
+    const onLikeClick = () => {
+        startTransition(async () => {
+            const updatedMedia = await incrementMediaLike(media.id);
+            if (updatedMedia) {
+                setLikes(updatedMedia.likes);
+            }
+        })
+    }
+
     return (
-        <article onKeyUp={onMediaKeyDown}>
+        <article>
             {mediaElement}
             <h3>{media.title}</h3>
-            <div className={styles.likes}><LikesDisplay likes={media.likes}/></div>
+            <button className={styles.likes} onClick={onLikeClick}><LikesDisplay likes={likes}/></button>
         </article>
     );
 }

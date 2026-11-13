@@ -68,10 +68,22 @@
 .likes {
   grid-row: 2;
 
+  margin: 0;
+  padding: 0;
+
   width: fit-content;
+  height: fit-content;
   justify-self: end;
+
+  background-color: unset;
 
   color: var(--fg-secondary);
   font-size: 1.5em;
   font-weight: 500;
+
+  cursor: pointer;
+}
+
+.likes:hover, .likes:focus {
+  background-color: unset;
 }
