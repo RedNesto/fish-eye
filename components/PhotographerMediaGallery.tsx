@@ -15,7 +15,7 @@ function MediaGalleryItem({ media, onMediaClick, onMediaKeyDown }: {
     const mediaElement = media.image
         // eslint-disable-next-line @next/next/no-img-element
         ? <img src={"/assets/" + media.image} alt={media.title} onClick={onMediaClick} tabIndex={0} onKeyDown={onMediaKeyDown}/>
-        : <video autoPlay muted loop playsInline src={"/assets/" + media.video} aria-label={media.title} onClick={onMediaClick} onKeyDown={onMediaKeyDown} tabIndex={0}/>;
+        : <video src={"/assets/" + media.video} aria-label={media.title} onClick={onMediaClick} onKeyDown={onMediaKeyDown} tabIndex={0}/>;
     const [likes, setLikes] = useState(media.likes);
     const onLikeClick = () => {
         startTransition(async () => {
