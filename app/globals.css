@@ -26,6 +26,10 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+body:has(dialog[open]) {
+  overflow: hidden;
+}
+
 a {
   color: unset;
   text-decoration: none;

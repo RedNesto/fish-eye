@@ -2,16 +2,21 @@
 
 import styles from "./PhotographerMediaGallery.module.css";
 import { Media } from "@/generated/prisma/client";
-import { useState } from "react";
+import { KeyboardEventHandler, MouseEventHandler, useState } from "react";
 import LikesDisplay from "@/components/LikesDisplay";
+import MediaLightbox from "@/components/MediaLightbox";
 
-function MediaGalleryItem({ media }: { media: Media }) {
+function MediaGalleryItem({ media, onMediaClick, onMediaKeyDown }: {
+    media: Media,
+    onMediaClick: MouseEventHandler<HTMLElement>,
+    onMediaKeyDown: KeyboardEventHandler<HTMLElement>,
+}) {
     const mediaElement = media.image
         // eslint-disable-next-line @next/next/no-img-element
-        ? <img src={"/assets/" + media.image} alt={media.title}/>
-        : <video autoPlay muted loop playsInline src={"/assets/" + media.video} aria-label={media.title}/>;
+        ? <img src={"/assets/" + media.image} alt={media.title} onClick={onMediaClick} tabIndex={0}/>
+        : <video autoPlay muted loop playsInline src={"/assets/" + media.video} aria-label={media.title} onClick={onMediaClick} tabIndex={0}/>;
     return (
-        <article>
+        <article onKeyUp={onMediaKeyDown}>
             {mediaElement}
             <h3>{media.title}</h3>
             <div className={styles.likes}><LikesDisplay likes={media.likes}/></div>
@@ -45,10 +50,22 @@ const mediaOrders: MediaOrder[] = [
 
 export default function PhotographerMediaGallery({ medias }: { medias: Media[] }) {
     const [orderId, setOrderId] = useState(mediaOrders[0].id);
+    const [lightbox, setLightbox] = useState(-1);
 
     const items = medias
         .sort(mediaOrders.find(o => o.id == orderId)?.comparator)
-        .map(media => <MediaGalleryItem key={media.id} media={media}/>);
+        .map((media, index) => {
+            const onMediaClick = () => setLightbox(index);
+            const onMediaKeyDown: KeyboardEventHandler<HTMLElement> = e => {
+                if (e.code === "Enter") {
+                    setLightbox(index);
+                    e.preventDefault();
+                }
+            }
+
+            return <MediaGalleryItem key={media.id} media={media}
+                                     onMediaClick={onMediaClick} onMediaKeyDown={onMediaKeyDown}/>;
+        });
 
     const orderOptions = mediaOrders.map(order => <option key={order.id} value={order.id}>{order.label}</option>);
 
@@ -62,6 +79,7 @@ export default function PhotographerMediaGallery({ medias }: { medias: Media[] }
                 </label>
             </div>
             <div className={styles.list}>{items}</div>
+            {lightbox >= 0 ? <MediaLightbox medias={medias} initialIndex={lightbox} onCloseAction={() => setLightbox(-1)}/> : ""}
         </section>
     );
 }
