@@ -5,7 +5,6 @@ import { getPhotographerById, getPhotographerMedias } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import PhotographerMediaGallery from "@/components/PhotographerMediaGallery";
-import LikesDisplay from "@/components/LikesDisplay";
 import { ContactButton } from "@/components/ContactFormDialog";
 
 async function Contents({ rawPhotographerId }: { rawPhotographerId: string }) {
@@ -20,8 +19,6 @@ async function Contents({ rawPhotographerId }: { rawPhotographerId: string }) {
     }
 
     const medias = await getPhotographerMedias(photographerId);
-
-    const totalLikes = medias.map(media => media.likes).reduce((previous, current) => previous + current, 0);
 
     return (
         <main className={styles.page}>
@@ -38,11 +35,7 @@ async function Contents({ rawPhotographerId }: { rawPhotographerId: string }) {
                     <Image className={styles.portrait} src={`/assets/${photographer.portrait}`} alt={photographer.name} width={200} height={200}/>
                 </div>
             </section>
-            <PhotographerMediaGallery medias={medias}/>
-            <div className={styles.stickyInfoBox}>
-                <div className={styles.likes}><LikesDisplay likes={totalLikes}/></div>
-                <p className={styles.dailyRate}>{photographer.price.toLocaleString("fr-FR", { currency: "EUR" })}€ / jour</p>
-            </div>
+            <PhotographerMediaGallery photographer={photographer} medias={medias}/>
         </main>
     );
 }

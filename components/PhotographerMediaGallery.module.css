@@ -87,3 +87,42 @@
 .likes:hover, .likes:focus {
   background-color: unset;
 }
+
+
+.stickyInfoBox {
+  display: flex;
+  position: sticky;
+  bottom: 0;
+  float: right;
+
+  gap: 3em;
+
+  width: fit-content;
+
+  padding: 1.2em;
+
+  color: var(--foreground);
+
+  background-color: var(--bg-secondary);
+}
+
+.stickyInfoBox .likes {
+  width: fit-content;
+  justify-self: end;
+
+  color: var(--foreground);
+
+  font-size: 1.5em;
+  font-weight: 500;
+}
+
+.stickyInfoBox .likes svg path {
+  fill: var(--foreground);
+}
+
+.stickyInfoBox .dailyRate {
+  margin: 0;
+
+  font-size: 1.5em;
+  font-weight: 500;
+}

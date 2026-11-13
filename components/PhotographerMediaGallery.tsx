@@ -1,16 +1,17 @@
 "use client";
 
 import styles from "./PhotographerMediaGallery.module.css";
-import { Media } from "@/generated/prisma/client";
+import { Media, Photographer } from "@/generated/prisma/client";
 import { KeyboardEventHandler, MouseEventHandler, startTransition, useState } from "react";
 import LikesDisplay from "@/components/LikesDisplay";
 import MediaLightbox from "@/components/MediaLightbox";
 import { incrementMediaLike } from "@/lib/prisma";
 
-function MediaGalleryItem({ media, onMediaClick, onMediaKeyDown }: {
+function MediaGalleryItem({ media, onMediaClick, onMediaKeyDown, onMediaLikesUpdate }: {
     media: Media,
     onMediaClick: MouseEventHandler<HTMLElement>,
     onMediaKeyDown: KeyboardEventHandler<HTMLElement>,
+    onMediaLikesUpdate: (oldLikes: number, newLikes: number) => void,
 }) {
     const mediaElement = media.image
         // eslint-disable-next-line @next/next/no-img-element
@@ -22,6 +23,7 @@ function MediaGalleryItem({ media, onMediaClick, onMediaKeyDown }: {
             const updatedMedia = await incrementMediaLike(media.id);
             if (updatedMedia) {
                 setLikes(updatedMedia.likes);
+                onMediaLikesUpdate(likes, updatedMedia.likes);
             }
         })
     }
@@ -59,9 +61,14 @@ const mediaOrders: MediaOrder[] = [
     },
 ];
 
-export default function PhotographerMediaGallery({ medias }: { medias: Media[] }) {
+export default function PhotographerMediaGallery({ photographer, medias }: { photographer: Photographer, medias: Media[] }) {
     const [orderId, setOrderId] = useState(mediaOrders[0].id);
     const [lightbox, setLightbox] = useState(-1);
+    const [totalLikes, setTotalLikes] = useState(() =>
+        medias.map(media => media.likes)
+            .reduce((previous, current) => previous + current, 0)
+    );
+    const updateMediaLikes = (oldLikes: number, newLikes: number) => setTotalLikes(totalLikes - oldLikes + newLikes);
 
     const items = medias
         .sort(mediaOrders.find(o => o.id == orderId)?.comparator)
@@ -74,8 +81,8 @@ export default function PhotographerMediaGallery({ medias }: { medias: Media[] }
                 }
             }
 
-            return <MediaGalleryItem key={media.id} media={media}
-                                     onMediaClick={onMediaClick} onMediaKeyDown={onMediaKeyDown}/>;
+            return <MediaGalleryItem key={media.id} media={media} onMediaClick={onMediaClick}
+                                     onMediaKeyDown={onMediaKeyDown} onMediaLikesUpdate={updateMediaLikes}/>;
         });
 
     const orderOptions = mediaOrders.map(order => <option key={order.id} value={order.id}>{order.label}</option>);
@@ -90,6 +97,10 @@ export default function PhotographerMediaGallery({ medias }: { medias: Media[] }
                 </label>
             </div>
             <div className={styles.list}>{items}</div>
+            <div className={styles.stickyInfoBox}>
+                <div className={styles.likes}><LikesDisplay likes={totalLikes}/></div>
+                <p className={styles.dailyRate}>{photographer.price.toLocaleString("fr-FR", { currency: "EUR" })}€ / jour</p>
+            </div>
             {lightbox >= 0 ? <MediaLightbox medias={medias} initialIndex={lightbox} onCloseAction={() => setLightbox(-1)}/> : ""}
         </section>
     );
