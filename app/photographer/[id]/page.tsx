@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import PhotographerMediaGallery from "@/components/PhotographerMediaGallery";
 import LikesDisplay from "@/components/LikesDisplay";
+import { ContactButton } from "@/components/ContactFormDialog";
 
 async function Contents({ rawPhotographerId }: { rawPhotographerId: string }) {
     const photographerId = Number.parseInt(rawPhotographerId);
@@ -31,7 +32,7 @@ async function Contents({ rawPhotographerId }: { rawPhotographerId: string }) {
                     <p className={styles.tagline}>{photographer.tagline}</p>
                 </div>
                 <div>
-                    <button aria-label="Contact Me">Contactez-moi</button>
+                    <ContactButton photographerName={photographer.name}/>
                 </div>
                 <div>
                     <Image className={styles.portrait} src={`/assets/${photographer.portrait}`} alt={photographer.name} width={200} height={200}/>

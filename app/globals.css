@@ -35,7 +35,7 @@ a {
   text-decoration: none;
 }
 
-button {
+button, input[type="submit"] {
   padding: 1.2em;
 
   background: var(--bg-primary);
@@ -48,6 +48,7 @@ button {
   border-radius: 5px;
 }
 
-button:hover, button:focus {
+button:hover, button:focus,
+input[type="submit"]:hover, input[type="submit"]:focus {
   background-color: var(--fg-primary);
 }
