@@ -6,6 +6,7 @@ import { KeyboardEventHandler, MouseEventHandler, startTransition, useState } fr
 import LikesDisplay from "@/components/LikesDisplay";
 import MediaLightbox from "@/components/MediaLightbox";
 import { incrementMediaLike } from "@/lib/prisma";
+import StyledSelect from "@/components/StyledSelect";
 
 function MediaGalleryItem({ media, onMediaClick, onMediaKeyDown, onMediaLikesUpdate }: {
     media: Media,
@@ -85,16 +86,10 @@ export default function PhotographerMediaGallery({ photographer, medias }: { pho
                                      onMediaKeyDown={onMediaKeyDown} onMediaLikesUpdate={updateMediaLikes}/>;
         });
 
-    const orderOptions = mediaOrders.map(order => <option key={order.id} value={order.id}>{order.label}</option>);
-
     return (
         <section>
             <div className={styles.controls}>
-                <label>Trier par
-                    <select value={orderId} onChange={(e) => setOrderId(e.target.value)}>
-                        {orderOptions}
-                    </select>
-                </label>
+                <label>Trier par <StyledSelect options={mediaOrders} value={orderId} setValue={setOrderId}/></label>
             </div>
             <div className={styles.list}>{items}</div>
             <div className={styles.stickyInfoBox}>
