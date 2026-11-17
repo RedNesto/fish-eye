@@ -52,3 +52,8 @@ button:hover, button:focus,
 input[type="submit"]:hover, input[type="submit"]:focus {
   background-color: var(--fg-primary);
 }
+
+*:focus-visible {
+  outline: 3px solid var(--fg-secondary-grey);
+  outline-offset: 2px;
+}

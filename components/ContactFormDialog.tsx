@@ -8,7 +8,7 @@ export function ContactButton({ photographerName }: { photographerName: string }
     const [contactModalOpen, setContactModalOpen] = useState(false);
 
     return <>
-        <button aria-label="Contact Me" onClick={() => setContactModalOpen(true)}>Contactez-moi</button>
+        <button aria-label={`Contacter ${photographerName}`} onClick={() => setContactModalOpen(true)}>Contactez-moi</button>
         {contactModalOpen && <ContactFormDialog photographerName={photographerName} onCloseAction={() => setContactModalOpen(false)}/>}
     </>
 }
@@ -31,22 +31,22 @@ export function ContactFormDialog({ photographerName, onCloseAction }: { photogr
     });
 
     return createPortal(
-        <dialog className={styles.contactFormDialog} ref={dialogRootRef} onClose={onCloseAction}>
+        <dialog className={styles.contactFormDialog} ref={dialogRootRef} onClose={onCloseAction} aria-label={`Formulaire de contact pour ${photographerName}`}>
             <h1>Contactez-moi<br/>{photographerName}</h1>
-            <button className={styles.closeButton} onClick={onCloseAction}>
-                <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <button className={styles.closeButton} onClick={onCloseAction} aria-label="Fermer le formulaire">
+                <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M57 19.23L52.77 15L36 31.77L19.23 15L15 19.23L31.77 36L15 52.77L19.23 57L36 40.23L52.77 57L57 52.77L40.23 36L57 19.23Z" fill="white"/>
                 </svg>
             </button>
             <form onSubmit={onSubmit} method="dialog">
                 <label htmlFor="firstname">Prénom</label>
-                <input type="text" name="firstname"/>
+                <input type="text" name="firstname" id="firstname" required/>
                 <label htmlFor="lastname">Nom</label>
-                <input type="text" name="lastname"/>
+                <input type="text" name="lastname" id="lastname" required/>
                 <label htmlFor="email">Email</label>
-                <input type="text" name="email"/>
+                <input type="email" name="email" id="email" required/>
                 <label htmlFor="message">Votre message</label>
-                <textarea name="message"/>
+                <textarea name="message" id="message" required/>
                 <input type="submit" value="Envoyer"/>
             </form>
         </dialog>,

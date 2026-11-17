@@ -33,7 +33,9 @@ function MediaGalleryItem({ media, onMediaClick, onMediaKeyDown, onMediaLikesUpd
         <article>
             {mediaElement}
             <h3>{media.title}</h3>
-            <button className={styles.likes} onClick={onLikeClick}><LikesDisplay likes={likes}/></button>
+            <button className={styles.likes} onClick={onLikeClick} aria-label={`Ajouter un like, ${likes} likes`}>
+                <LikesDisplay likes={likes}/>
+            </button>
         </article>
     );
 }
@@ -87,13 +89,15 @@ export default function PhotographerMediaGallery({ photographer, medias }: { pho
         });
 
     return (
-        <section>
+        <section aria-label="Galerie de médias">
             <div className={styles.controls}>
                 <label>Trier par <StyledSelect options={mediaOrders} value={orderId} setValue={setOrderId}/></label>
             </div>
-            <div className={styles.list}>{items}</div>
+            <div className={styles.list} role="list" aria-label="Liste des médias">{items}</div>
             <div className={styles.stickyInfoBox}>
-                <div className={styles.likes}><LikesDisplay likes={totalLikes}/></div>
+                <div className={styles.likes} aria-label={`${totalLikes} likes au total`}>
+                    <LikesDisplay likes={totalLikes}/>
+                </div>
                 <p className={styles.dailyRate}>{photographer.price.toLocaleString("fr-FR", { currency: "EUR" })}€ / jour</p>
             </div>
             {lightbox >= 0 ? <MediaLightbox medias={medias} initialIndex={lightbox} onCloseAction={() => setLightbox(-1)}/> : ""}
