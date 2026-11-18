@@ -31,7 +31,7 @@ export function ContactFormDialog({ photographerName, onCloseAction }: { photogr
     });
 
     return createPortal(
-        <dialog className={styles.contactFormDialog} ref={dialogRootRef} onClose={onCloseAction} aria-label={`Formulaire de contact pour ${photographerName}`}>
+        <dialog className={styles.contactFormDialog} ref={dialogRootRef} closedby="any" onClose={onCloseAction} aria-label={`Formulaire de contact pour ${photographerName}`}>
             <h1>Contactez-moi<br/>{photographerName}</h1>
             <button className={styles.closeButton} onClick={onCloseAction} aria-label="Fermer le formulaire">
                 <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

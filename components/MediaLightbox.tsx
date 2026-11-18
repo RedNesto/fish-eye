@@ -43,7 +43,7 @@ export default function MediaLightbox({ medias, initialIndex, onCloseAction }: {
     });
 
     return createPortal(
-        <dialog className={styles.lightbox} ref={dialogRootRef} onClose={onCloseAction} onKeyUp={onKeyUp} aria-label={`Visionneuse de médias, ${index + 1} sur ${medias.length}`}>
+        <dialog className={styles.lightbox} ref={dialogRootRef} closedby="any" onClose={onCloseAction} onKeyUp={onKeyUp} aria-label={`Visionneuse de médias, ${index + 1} sur ${medias.length}`}>
             <button className={styles.closeButton} onClick={onCloseAction} aria-label="Fermer la visionneuse">
                 <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M42 4.23L37.77 0L21 16.77L4.23 0L0 4.23L16.77 21L0 37.77L4.23 42L21 25.23L37.77 42L42 37.77L25.23 21L42 4.23Z" fill="#911C1C"/>
