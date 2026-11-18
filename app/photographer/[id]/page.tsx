@@ -1,11 +1,12 @@
 import Header from "@/components/Header";
 import styles from "./page.module.css";
-import { Suspense } from "react";
 import { getPhotographerById, getPhotographerMedias } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import PhotographerMediaGallery from "@/components/PhotographerMediaGallery";
 import { ContactButton } from "@/components/ContactFormDialog";
+
+export const instant = false;
 
 async function Contents({ rawPhotographerId }: { rawPhotographerId: string }) {
     const photographerId = Number.parseInt(rawPhotographerId);
@@ -32,7 +33,7 @@ async function Contents({ rawPhotographerId }: { rawPhotographerId: string }) {
                     <ContactButton photographerName={photographer.name}/>
                 </div>
                 <div>
-                    <Image className={styles.portrait} src={`/assets/${photographer.portrait}`} alt={photographer.name} width={200} height={200}/>
+                    <Image className={styles.portrait} src={`/assets/${photographer.portrait}`} alt={photographer.name} width={200} height={200} loading="eager"/>
                 </div>
             </section>
             <PhotographerMediaGallery photographer={photographer} medias={medias}/>
@@ -44,9 +45,7 @@ export default async function PhotographerPage({ params }: PageProps<"/photograp
     return (
         <>
             <Header/>
-            <Suspense fallback={<p>Chargement...</p>}>
-                {params.then(({ id }) => <Contents rawPhotographerId={id}/>)}
-            </Suspense>
+            {params.then(({ id }) => <Contents rawPhotographerId={id}/>)}
         </>
     );
 }
