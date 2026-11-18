@@ -7,6 +7,7 @@ import LikesDisplay from "@/components/LikesDisplay";
 import MediaLightbox from "@/components/MediaLightbox";
 import { incrementMediaLike } from "@/lib/prisma";
 import StyledSelect from "@/components/StyledSelect";
+import Image from "next/image";
 
 function MediaGalleryItem({ media, onMediaClick, onMediaKeyDown, onMediaLikesUpdate }: {
     media: Media,
@@ -16,7 +17,7 @@ function MediaGalleryItem({ media, onMediaClick, onMediaKeyDown, onMediaLikesUpd
 }) {
     const mediaElement = media.image
         // eslint-disable-next-line @next/next/no-img-element
-        ? <img src={"/assets/" + media.image} alt={media.title} onClick={onMediaClick} tabIndex={0} onKeyDown={onMediaKeyDown}/>
+        ? <Image src={"/assets/" + media.image} alt={media.title} width={350} height={300} onClick={onMediaClick} tabIndex={0} onKeyDown={onMediaKeyDown}/>
         : <video src={"/assets/" + media.video} aria-label={media.title} onClick={onMediaClick} onKeyDown={onMediaKeyDown} tabIndex={0}/>;
     const [likes, setLikes] = useState(media.likes);
     const onLikeClick = () => {
@@ -93,7 +94,7 @@ export default function PhotographerMediaGallery({ photographer, medias }: { pho
             <div className={styles.controls}>
                 <label>Trier par <StyledSelect options={mediaOrders} value={orderId} setValue={setOrderId}/></label>
             </div>
-            <div className={styles.list} role="list" aria-label="Liste des médias">{items}</div>
+            <div className={styles.list} aria-label="Liste des médias">{items}</div>
             <div className={styles.stickyInfoBox}>
                 <div className={styles.likes} aria-label={`${totalLikes} likes au total`}>
                     <LikesDisplay likes={totalLikes}/>
