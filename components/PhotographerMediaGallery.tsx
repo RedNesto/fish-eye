@@ -2,7 +2,7 @@
 
 import styles from "./PhotographerMediaGallery.module.css";
 import { Media, Photographer } from "@/generated/prisma/client";
-import { KeyboardEventHandler, MouseEventHandler, startTransition, useState } from "react";
+import { KeyboardEventHandler, MouseEventHandler, startTransition, useRef, useState } from "react";
 import LikesDisplay from "@/components/LikesDisplay";
 import MediaLightbox from "@/components/MediaLightbox";
 import { incrementMediaLike } from "@/lib/prisma";
@@ -16,7 +16,6 @@ function MediaGalleryItem({ media, onMediaClick, onMediaKeyDown, onMediaLikesUpd
     onMediaLikesUpdate: (oldLikes: number, newLikes: number) => void,
 }) {
     const mediaElement = media.image
-        // eslint-disable-next-line @next/next/no-img-element
         ? <Image src={"/assets/" + media.image} alt={media.title} width={350} height={300} onClick={onMediaClick} tabIndex={0} onKeyDown={onMediaKeyDown}/>
         : <video src={"/assets/" + media.video} aria-label={media.title} onClick={onMediaClick} onKeyDown={onMediaKeyDown} tabIndex={0}/>;
     const [likes, setLikes] = useState(media.likes);
@@ -89,19 +88,33 @@ export default function PhotographerMediaGallery({ photographer, medias }: { pho
                                      onMediaKeyDown={onMediaKeyDown} onMediaLikesUpdate={updateMediaLikes}/>;
         });
 
+    const listRef = useRef<HTMLDivElement>(null);
+
+    const onLightboxClose = (mediaIndex: number) => {
+        setTimeout(() => {
+            const selectedMedia = listRef.current?.querySelector(`article:nth-child(${mediaIndex + 1}) *:first-child`);
+            if (selectedMedia instanceof HTMLElement) {
+                selectedMedia.focus();
+            } else {
+                listRef.current?.focus();
+            }
+        }, 1)
+        setLightbox(-1);
+    }
+
     return (
         <section aria-label="Galerie de médias">
             <div className={styles.controls}>
                 <label>Trier par <StyledSelect options={mediaOrders} value={orderId} setValue={setOrderId}/></label>
             </div>
-            <div className={styles.list} aria-label="Liste des médias">{items}</div>
+            <div className={styles.list} ref={listRef} aria-label="Liste des médias">{items}</div>
             <div className={styles.stickyInfoBox}>
                 <div className={styles.likes} aria-label={`${totalLikes} likes au total`}>
                     <LikesDisplay likes={totalLikes}/>
                 </div>
                 <p className={styles.dailyRate}>{photographer.price.toLocaleString("fr-FR", { currency: "EUR" })}€ / jour</p>
             </div>
-            {lightbox >= 0 ? <MediaLightbox medias={medias} initialIndex={lightbox} onCloseAction={() => setLightbox(-1)}/> : ""}
+            {lightbox >= 0 ? <MediaLightbox medias={medias} initialIndex={lightbox} onCloseAction={onLightboxClose}/> : ""}
         </section>
     );
 }
