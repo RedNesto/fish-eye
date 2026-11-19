@@ -16,6 +16,7 @@
 
   font-size: 2.25em; /* ~36px */
   text-align: center;
+  text-wrap: nowrap;
   color: var(--fg-primary)
 }
 

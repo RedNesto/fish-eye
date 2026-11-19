@@ -7,6 +7,8 @@
   padding: 1em;
 
   width: 70vw;
+
+  border: none;
 }
 
 .lightbox button {
@@ -46,6 +48,7 @@
   height: 80vh;
 
   border-radius: 5px;
+  object-fit: contain;
 }
 
 .title {
@@ -56,4 +59,31 @@
   color: var(--fg-secondary);
   font-size: 1.5em;
   font-weight: 400;
+}
+
+@media (max-width: 1024px) {
+  .lightbox {
+    width: 90vw;
+  }
+}
+
+@media (max-width: 768px) {
+  .lightbox {
+    padding: 1em 0 0 0;
+  }
+
+  .media {
+    grid-column: 1 / 4;
+    padding: 1em;
+  }
+
+  .previousButton, .nextButton {
+    grid-row: 3;
+  }
+
+  .closeButton {
+    position: relative;
+    top: 0;
+    right: 0;
+  }
 }

@@ -8,7 +8,7 @@
   align-items: center;
   justify-items: center;
 
-  padding: 3em 0;
+  padding: 25px;
 
   background: #FAFAFA;
 }
@@ -36,4 +36,32 @@
 .portrait {
   object-fit: cover;
   border-radius: 100px;
+}
+
+@media (max-width: 1440px) {
+  .page {
+    margin: 0 50px;
+  }
+}
+
+@media (max-width: 768px) {
+  .page {
+    margin: 0 50px;
+  }
+
+  .info {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    padding: 15px;
+    margin-bottom: 3em;
+
+    place-items: center;
+    text-align: center;
+  }
+}
+
+@media (max-width: 425px) {
+  .page {
+    margin: 0 15px;
+  }
 }

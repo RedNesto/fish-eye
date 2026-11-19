@@ -17,7 +17,9 @@
 
 .list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  --item-width: 350px;
+  --item-height: 300px;
+  grid-template-columns: repeat(auto-fit, minmax(var(--item-width), 1fr));
   grid-auto-rows: min-content;
   gap: 3em;
 
@@ -33,8 +35,6 @@
   grid-template-rows: min-content min-content;
   gap: 0.5em;
 
-  align-content: end;
-
   border-radius: 5px;
 }
 
@@ -42,8 +42,10 @@
 .list article img {
   grid-column: 1 / 3;
 
-  width: 350px;
-  height: 300px;
+  width: var(--item-width);
+  height: var(--item-height);
+
+  justify-self: center;
 
   object-fit: cover;
   border-radius: 5px;
@@ -52,8 +54,10 @@
 .list article video {
   grid-column: 1 / 3;
 
-  width: 350px;
-  height: 300px;
+  width: var(--item-width);
+  height: var(--item-height);
+
+  justify-self: center;
 
   object-fit: cover;
   border-radius: 5px;
@@ -136,4 +140,27 @@
 
   font-size: 1.5em;
   font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .list {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 375px) {
+  .list {
+    gap: 2em;
+    --item-width: 300px;
+    --item-height: 250px;
+  }
+}
+
+@media (max-width: 320px) {
+  .list {
+    gap: 1em;
+    --item-width: 250px;
+    --item-height: 200px;
+  }
 }
