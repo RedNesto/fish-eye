@@ -6,12 +6,15 @@
 
   border: unset;
   background-color: var(--bg-secondary);
+
+  --dialog-header-font-size: 4em;
+  --form-font-size: 2.3em;
 }
 
 .contactFormDialog h1 {
   margin: 0 0 0.5em;
 
-  font-size: 4em;
+  font-size: var(--dialog-header-font-size);
   font-weight: 400;
 }
 
@@ -34,7 +37,7 @@
 
 .contactFormDialog form label {
   color: #312E2E;
-  font-size: 2.3em;
+  font-size: var(--form-font-size);
   font-weight: 400;
 }
 
@@ -42,13 +45,13 @@
   margin-bottom: 0.3em;
   padding: 0.2em;
 
-  font-size: 2.3em;
+  font-size: var(--form-font-size);
   font-weight: 400;
 }
 
 .contactFormDialog form textarea {
   height: 6em;
-  font-size: 2.3em;
+  font-size: var(--form-font-size);
   font-weight: 400;
   resize: none;
 }
@@ -60,4 +63,29 @@
   width: fit-content;
 
   font-size: 1em;
+}
+
+@media (max-width: 768px) or (max-height: 950px) {
+  .contactFormDialog {
+    --dialog-header-font-size: 2em;
+    --form-font-size: 1.3em;
+  }
+
+  .contactFormDialog form input[type="submit"] {
+    padding: 1em 2em;
+  }
+}
+
+@media (max-width: 375px) {
+  .closeButton {
+    scale: 0.75;
+    top: -0.5em;
+    right: -1em;
+  }
+}
+
+@media (max-width: 320px) {
+  .contactFormDialog {
+    --dialog-header-font-size: 1.7em;
+  }
 }
