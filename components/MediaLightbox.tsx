@@ -9,6 +9,8 @@ export default function MediaLightbox({ medias, initialIndex, onCloseAction }: {
     const [index, setIndex] = useState(initialIndex);
     const media = medias[index];
     const mediaElement = media.image
+        // Not useful for the lightbox
+        // eslint-disable-next-line @next/next/no-img-element
         ? <img className={styles.media} src={"/assets/" + media.image} alt={media.title}/>
         : <video className={styles.media} autoPlay muted loop playsInline src={"/assets/" + media.video} aria-label={media.title}/>;
     const dialogRootRef = useRef<HTMLDialogElement>(null);
